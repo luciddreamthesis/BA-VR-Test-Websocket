@@ -14,7 +14,6 @@ public class WebSocketParser : MonoBehaviour {
     private float x = 0.0f;
     private string auth = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBJZCI6ImNvbS5taW1pLnlvcmQubHVjaWQtZHJlYW0iLCJhcHBWZXJzaW9uIjoiMS4wIiwiZXhwIjoxNTkwOTIxOTIyLCJuYmYiOjE1OTA2NjI3MjIsInVzZXJJZCI6Ijk1M2MyNzhmLWEzM2QtNDRkMi05NzNhLTUzN2Q0MzQ3NDFjYSIsInVzZXJuYW1lIjoibWltaS55b3JkIiwidmVyc2lvbiI6IjIuMCJ9.aFFKQJkuykTVGcVxOuDR6I5Np4axib2jO653OUXR+6E=";
 
-
     private Queue responseData;
 
     public GameObject sphereInterest;
@@ -25,7 +24,7 @@ public class WebSocketParser : MonoBehaviour {
     public GameObject sphereLongTermExcitement;
     public GameObject sphereFocus;
 
-    public CSVExporter csvExporter;
+    //public CSVExporter csvExporter;
 
     // Use this for initialization
     void Start()
@@ -38,7 +37,7 @@ public class WebSocketParser : MonoBehaviour {
         wsUri.Host = "emotivcortex.com";
         wsUri.Port = 6868;
         wsUri.Scheme = "wss";
-        wsUri.Path = "wss://localhost:6868";
+        wsUri.Path = "";
 
         var url = wsUri.Uri;
 
@@ -88,7 +87,7 @@ public class WebSocketParser : MonoBehaviour {
                 sphereLongTermExcitement.transform.position = new Vector3(t, float.Parse(response.met[5]), 0f);
                 sphereFocus.transform.position = new Vector3(t, float.Parse(response.met[6]), 0f);
    
-                csvExporter.WriteEEGData(response);
+               // csvExporter.WriteEEGData(response);
             }
            
         }
