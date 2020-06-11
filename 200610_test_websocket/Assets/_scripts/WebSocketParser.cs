@@ -12,7 +12,7 @@ public class WebSocketParser : MonoBehaviour {
     public delegate void OnConnected();
     public OnConnected OnConnect;
     private float x = 0.0f;
-    private string auth = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBJZCI6ImNvbS5taW1pLnlvcmQubHVjaWQtZHJlYW0iLCJhcHBWZXJzaW9uIjoiMS4wIiwiZXhwIjoxNTkwOTIxOTIyLCJuYmYiOjE1OTA2NjI3MjIsInVzZXJJZCI6Ijk1M2MyNzhmLWEzM2QtNDRkMi05NzNhLTUzN2Q0MzQ3NDFjYSIsInVzZXJuYW1lIjoibWltaS55b3JkIiwidmVyc2lvbiI6IjIuMCJ9.aFFKQJkuykTVGcVxOuDR6I5Np4axib2jO653OUXR+6E=";
+    private string auth = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBJZCI6ImNvbS5taW1pLnlvcmQubHVjaWQtZHJlYW0iLCJhcHBWZXJzaW9uIjoiMS4wIiwiZXhwIjoxNTkyMDMyNDcyLCJuYmYiOjE1OTE3NzMyNzIsInVzZXJJZCI6ImFhN2E2NDI2LTUxMTAtNDc4Yy04OTFhLWYwMzlmZTlhNmEyNCIsInVzZXJuYW1lIjoibWltaS55b3JkIiwidmVyc2lvbiI6IjIuMCJ9.QNiWXsslXYqaK3wJ/aSTO6geF35jckzgJWWPC/h3AFA=";
 
     private Queue responseData;
 
@@ -34,10 +34,10 @@ public class WebSocketParser : MonoBehaviour {
 
         var wsUri = new UriBuilder();
 
-        wsUri.Host = "emotivcortex.com";
+        wsUri.Host = "localhost";
         wsUri.Port = 6868;
         wsUri.Scheme = "wss";
-        wsUri.Path = "";
+        wsUri.Path = "wss://localhost:6868";
 
         var url = wsUri.Uri;
 
