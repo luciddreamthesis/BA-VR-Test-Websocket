@@ -16,13 +16,17 @@ public class WebSocketParser : MonoBehaviour {
 
     private Queue responseData;
 
-    public GameObject sphereInterest;
-    public GameObject sphereStress;
-    public GameObject sphereRelax;
-    public GameObject sphereExcitement;
-    public GameObject sphereEngagement;
-    public GameObject sphereLongTermExcitement;
+    //public GameObject sphereInterest;
+    //public GameObject sphereStress;
+    //public GameObject sphereRelax;
+    //public GameObject sphereExcitement;
+    //public GameObject sphereEngagement;
+    //public GameObject sphereLongTermExcitement;
     public GameObject sphereFocus;
+
+    public Transform Target;
+    float speed = 1.0f;
+    public bool isMoving = false;
     public string cortexToken;
 
     //public CSVExporter csvExporter;
@@ -87,21 +91,24 @@ public class WebSocketParser : MonoBehaviour {
             //  Subscribe("met", cortexToken, responseRaw.result.id);
             }
 
-            if(response.mot.Count>0){
+            //if(response.mot.Count>0){
                 //sphere.transform.position = new Vector3(float.Parse(response.mot[7]), float.Parse(response.mot[8]), float.Parse(response.mot[9]));
-            }
+            //}
 
             if(response.met.Count>0){
-                // float t = Time.time*0.01f;
+                float t = Time.time*0.1f;
+                var step = speed * Time.deltaTime;
                 // sphereInterest.transform.position = new Vector3(t,float.Parse(response.met[0]),0f);
                 // sphereStress.transform.position = new Vector3(t, float.Parse(response.met[1]), 0f);
                 // sphereRelax.transform.position = new Vector3(t, float.Parse(response.met[2]), 0f);
                 // sphereExcitement.transform.position = new Vector3(t, float.Parse(response.met[3]), 0f);
                 // sphereEngagement.transform.position = new Vector3(t, float.Parse(response.met[4]), 0f);
                 // sphereLongTermExcitement.transform.position = new Vector3(t, float.Parse(response.met[5]), 0f);
-                // sphereFocus.transform.position = new Vector3(t, float.Parse(response.met[6]), 0f);
+                //sphereFocus.transform.position = new Vector3(t, float.Parse(response.met[1]), 1f);
+                //sphereFocus.transform.position = new Vector3(0f, 3f, 0f);
+                sphereFocus.transform.position = Vector3.MoveTowards(transform.position, Target.position, step);
+                // csvExporter.WriteEEGData(response);
 
-               // csvExporter.WriteEEGData(response);
             }
 
         }
