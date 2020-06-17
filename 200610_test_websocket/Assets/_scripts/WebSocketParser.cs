@@ -12,6 +12,7 @@ public class WebSocketParser : MonoBehaviour {
     public delegate void OnConnected();
     public OnConnected OnConnect;
     private float x = 0.0f;
+    private float lastFocusValue =0;
     private string auth; // = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBJZCI6ImNvbS5taW1pLnlvcmQubHVjaWQtZHJlYW0iLCJhcHBWZXJzaW9uIjoiMS4wIiwiZXhwIjoxNTkyMDMyNDcyLCJuYmYiOjE1OTE3NzMyNzIsInVzZXJJZCI6ImFhN2E2NDI2LTUxMTAtNDc4Yy04OTFhLWYwMzlmZTlhNmEyNCIsInVzZXJuYW1lIjoibWltaS55b3JkIiwidmVyc2lvbiI6IjIuMCJ9.QNiWXsslXYqaK3wJ/aSTO6geF35jckzgJWWPC/h3AFA=";
 
     private Queue responseData;
@@ -26,7 +27,7 @@ public class WebSocketParser : MonoBehaviour {
 
     public Transform Target;
     float speed = 1.0f;
-    
+
 
     //public bool isMoving = false;
     public string cortexToken;
@@ -96,23 +97,17 @@ public class WebSocketParser : MonoBehaviour {
             //if(response.mot.Count>0){
             //sphere.transform.position = new Vector3(float.Parse(response.mot[7]), float.Parse(response.mot[8]), float.Parse(response.mot[9]));
             //}
+            Debug.Log (response.met[1]);
 
-            private float newFocus = float.Parse(response.met[1];
-            Debug.Log(newFocus);
-        
-            if(newFocus > lastFocusValue){           
-                float t = Time.time*0.1f;
-                var step = speed * Time.deltaTime;
-                Debug.Log("focus up " + newFocus);
-                // sphereInterest.transform.position = new Vector3(t,float.Parse(response.met[0]),0f);
-                // sphereStress.transform.position = new Vector3(t, float.Parse(response.met[1]), 0f);
-                // sphereRelax.transform.position = new Vector3(t, float.Parse(response.met[2]), 0f);
-                // sphereExcitement.transform.position = new Vector3(t, float.Parse(response.met[3]), 0f);
-                // sphereEngagement.transform.position = new Vector3(t, float.Parse(response.met[4]), 0f);
-                // sphereLongTermExcitement.transform.position = new Vector3(t, float.Parse(response.met[5]), 0f);
-                //sphereFocus.transform.position = new Vector3(t, float.Parse(response.met[1]), 1f);
-                //sphereFocus.transform.position = new Vector3(0f, 3f, 0f);
-                sphereFocus.transform.position = Vector3.MoveTowards(transform.position, Target.position, step);
+
+            float newFocus = float.Parse(response.met[1]);
+
+
+            if(newFocus > lastFocusValue){
+
+                float step = 2f;
+
+                sphereFocus.transform.position = Vector3.MoveTowards(sphereFocus.transform.position, Target.position, step);
                 lastFocusValue = newFocus;
             }
             else
@@ -120,10 +115,9 @@ public class WebSocketParser : MonoBehaviour {
                 Debug.Log("focus down" + newFocus);
             }
             // csvExporter.WriteEEGData(response);
-
         }
-   
-      
+  }
+
     void Authorize(){
         WebSocketData.AuthParameter p = new WebSocketData.AuthParameter();
         p.clientId = "ZFDADBiG5lri14hJjNMQSaXdooyu3x8pPDGgEbCe";
