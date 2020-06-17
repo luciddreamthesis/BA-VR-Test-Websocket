@@ -26,7 +26,9 @@ public class WebSocketParser : MonoBehaviour {
 
     public Transform Target;
     float speed = 1.0f;
-    public bool isMoving = false;
+    
+
+    //public bool isMoving = false;
     public string cortexToken;
 
     //public CSVExporter csvExporter;
@@ -92,12 +94,16 @@ public class WebSocketParser : MonoBehaviour {
             }
 
             //if(response.mot.Count>0){
-                //sphere.transform.position = new Vector3(float.Parse(response.mot[7]), float.Parse(response.mot[8]), float.Parse(response.mot[9]));
+            //sphere.transform.position = new Vector3(float.Parse(response.mot[7]), float.Parse(response.mot[8]), float.Parse(response.mot[9]));
             //}
 
-            if(response.met.Count>0){
+            private float newFocus = float.Parse(response.met[1];
+            Debug.Log(newFocus);
+        
+            if(newFocus > lastFocusValue){           
                 float t = Time.time*0.1f;
                 var step = speed * Time.deltaTime;
+                Debug.Log("focus up " + newFocus);
                 // sphereInterest.transform.position = new Vector3(t,float.Parse(response.met[0]),0f);
                 // sphereStress.transform.position = new Vector3(t, float.Parse(response.met[1]), 0f);
                 // sphereRelax.transform.position = new Vector3(t, float.Parse(response.met[2]), 0f);
@@ -107,12 +113,17 @@ public class WebSocketParser : MonoBehaviour {
                 //sphereFocus.transform.position = new Vector3(t, float.Parse(response.met[1]), 1f);
                 //sphereFocus.transform.position = new Vector3(0f, 3f, 0f);
                 sphereFocus.transform.position = Vector3.MoveTowards(transform.position, Target.position, step);
-                // csvExporter.WriteEEGData(response);
-
+                lastFocusValue = newFocus;
             }
+            else
+            {
+                Debug.Log("focus down" + newFocus);
+            }
+            // csvExporter.WriteEEGData(response);
 
         }
-    }
+   
+      
     void Authorize(){
         WebSocketData.AuthParameter p = new WebSocketData.AuthParameter();
         p.clientId = "ZFDADBiG5lri14hJjNMQSaXdooyu3x8pPDGgEbCe";
