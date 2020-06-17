@@ -103,11 +103,12 @@ public class WebSocketParser : MonoBehaviour {
             float newFocus = float.Parse(response.met[1]);
 
 
-            if(newFocus > lastFocusValue){
+            if(newFocus > 0.1){
 
                 float step = 2f;
-
+              
                 sphereFocus.transform.position = Vector3.MoveTowards(sphereFocus.transform.position, Target.position, step);
+
                 lastFocusValue = newFocus;
             }
             else
