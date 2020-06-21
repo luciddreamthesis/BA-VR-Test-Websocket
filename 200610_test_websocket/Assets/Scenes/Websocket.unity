@@ -248,6 +248,8 @@ MonoBehaviour:
   sphereFocus: {fileID: 2133556443}
   Target: {fileID: 472497340}
   cortexToken: 
+  step: 4
+  timePerStep: 5
 --- !u!65 &181395057
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -349,7 +351,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 472497339}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.96, z: -3.52}
+  m_LocalPosition: {x: 0, y: 5, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children: []
   m_Father: {fileID: 0}
@@ -648,7 +650,7 @@ GameObject:
   - component: {fileID: 2133556445}
   - component: {fileID: 2133556444}
   m_Layer: 0
-  m_Name: SphereFocus
+  m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -722,7 +724,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2133556443}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.11, y: 0.38, z: 0}
+  m_LocalPosition: {x: 11.66, y: 0, z: -3.07}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

@@ -4,7 +4,7 @@ using UnityEngine;
 using WebSocketSharp;
 using System;
 using System.IO;
-
+using DigitalRuby.Tween;
 public class WebSocketParser : MonoBehaviour {
 
     public WebSocket ws;
@@ -31,6 +31,10 @@ public class WebSocketParser : MonoBehaviour {
 
     //public bool isMoving = false;
     public string cortexToken;
+
+    public float step = 4;
+    float distPerStep = 1f;
+    public float timePerStep = 5f;
 
     //public CSVExporter csvExporter;
 
@@ -66,6 +70,9 @@ public class WebSocketParser : MonoBehaviour {
         };
 
         ws.Connect();
+
+        float distance = Vector3.Distance(Target.position, sphereFocus.transform.position);
+        distPerStep = distance / step;
     }
 
     // Update is called once per frame
@@ -104,11 +111,20 @@ public class WebSocketParser : MonoBehaviour {
 
 
             if(newFocus > 0.1){
+                Vector3 startPos = sphereFocus.transform.position;
+                
+                Vector3 endPos = Vector3.MoveTowards(sphereFocus.transform.position, Target.position, distPerStep);
 
-                float step = 2f;
-              
-                sphereFocus.transform.position = Vector3.MoveTowards(sphereFocus.transform.position, Target.position, step);
+                
 
+                System.Action<ITween<Vector3>> sphereMovement = (t) =>
+                {
+                    sphereFocus.transform.position = t.CurrentValue;
+                };
+
+
+                // completion defaults to null if not passed in
+                sphereFocus.gameObject.Tween("SphereMovement", startPos, endPos, timePerStep, TweenScaleFunctions.CubicEaseInOut, sphereMovement);
                 lastFocusValue = newFocus;
             }
             else
