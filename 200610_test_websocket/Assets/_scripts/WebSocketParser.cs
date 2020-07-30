@@ -104,18 +104,18 @@ public class WebSocketParser : MonoBehaviour {
             //if(response.mot.Count>0){
             //sphere.transform.position = new Vector3(float.Parse(response.mot[7]), float.Parse(response.mot[8]), float.Parse(response.mot[9]));
             //}
-            Debug.Log (response.met[1]);
+            Debug.Log (response.met[18]);
 
 
-            float newFocus = float.Parse(response.met[1]);
+            float newFocus = float.Parse(response.met[18]);
 
 
-            if(newFocus > 0.1){
+            if(newFocus > 0.4){
                 Vector3 startPos = sphereFocus.transform.position;
-                
+
                 Vector3 endPos = Vector3.MoveTowards(sphereFocus.transform.position, Target.position, distPerStep);
 
-                
+
 
                 System.Action<ITween<Vector3>> sphereMovement = (t) =>
                 {
