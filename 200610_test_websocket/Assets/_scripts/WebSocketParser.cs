@@ -8,10 +8,10 @@ using DigitalRuby.Tween;
 public class WebSocketParser : MonoBehaviour {
 
     //Play Sound
-    public AudioClip SoundToPlay;
-    public float Volume;
-    AudioSource audio;
-    //public bool alreadyPlayed = false;
+    public AudioSource playSoundUp;
+    public AudioSource playSoundDown;
+
+    
 
 
     public WebSocket ws;
@@ -43,13 +43,14 @@ public class WebSocketParser : MonoBehaviour {
     public float step = 4;
     float distPerStep = 1f;
     public float timePerStep = 5f;
-    public float timePerStepBack = 5f; 
+    public float timePerStepBack = 5f;
 
     //public CSVExporter csvExporter;
 
     // Use this for initialization
     public void Main ()
     {
+        
 
         responseData = new Queue();
 
@@ -84,6 +85,8 @@ public class WebSocketParser : MonoBehaviour {
         distPerStep = distance / step;
     }
 
+
+    
     // Update is called once per frame
     void Update()
     {
@@ -109,14 +112,12 @@ public class WebSocketParser : MonoBehaviour {
                 Subscribe("met", cortexToken, responseRaw.result.id);
             }
 
-            //if(response.mot.Count>0){
-            //sphere.transform.position = new Vector3(float.Parse(response.mot[7]), float.Parse(response.mot[8]), float.Parse(response.mot[9]));
-            //}
+           
             Debug.Log ("Response.Met: " + response.met[18]);
 
 
             float newFocus = float.Parse(response.met[18]);
-           
+
 
             Debug.Log("NewFocus: " + newFocus);
 
@@ -125,15 +126,14 @@ public class WebSocketParser : MonoBehaviour {
                 Debug.Log("no data");
             }
 
-            if (newFocus > 300000){
+            if (newFocus > 0.6){
 
                 Debug.Log("Up");
 
                 //play sound
-                audio = GetComponent<AudioSource>();
-                audio.PlayOneShot(SoundToPlay, Volume);
+                playSoundUp.Play();
 
-                //animate 
+                //animate
                 Vector3 startPos = sphereFocus.transform.position;
 
                 Vector3 endPos = Vector3.MoveTowards(sphereFocus.transform.position, Target.position, distPerStep);
@@ -152,13 +152,17 @@ public class WebSocketParser : MonoBehaviour {
             }
             else if (newFocus == null)
             {
-                Debug.Log("no data" + newFocus);
-                
+                Debug.Log("no data");
+
             }
 
-            else 
+            else
             {
-                Debug.Log("down" + newFocus);
+                Debug.Log("down: " + newFocus);
+
+                //play sound
+                playSoundDown.Play();
+
                 Vector3 startPos = sphereFocus.transform.position;
                 Vector3 endPos = Vector3.MoveTowards(sphereFocus.transform.position, StartPoint.position, distPerStep);
 

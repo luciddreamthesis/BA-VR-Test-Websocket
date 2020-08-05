@@ -245,8 +245,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00fa01f6fca101b4086d5780ad64fe72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SoundToPlay: {fileID: 0}
-  Volume: 0
+  playSoundUp: {fileID: 1382317043}
+  playSoundDown: {fileID: 1805847091}
   sphereFocus: {fileID: 2133556443}
   Target: {fileID: 472497340}
   StartPoint: {fileID: 466189488}
