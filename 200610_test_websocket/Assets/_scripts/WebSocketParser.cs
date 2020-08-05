@@ -7,6 +7,13 @@ using System.IO;
 using DigitalRuby.Tween;
 public class WebSocketParser : MonoBehaviour {
 
+    //Play Sound
+    public AudioClip SoundToPlay;
+    public float Volume;
+    AudioSource audio;
+    //public bool alreadyPlayed = false;
+
+
     public WebSocket ws;
 
     public delegate void OnConnected();
@@ -26,6 +33,7 @@ public class WebSocketParser : MonoBehaviour {
     public GameObject sphereFocus;
 
     public Transform Target;
+    public Transform StartPoint;
     float speed = 1.0f;
 
 
@@ -35,6 +43,7 @@ public class WebSocketParser : MonoBehaviour {
     public float step = 4;
     float distPerStep = 1f;
     public float timePerStep = 5f;
+    public float timePerStepBack = 5f; 
 
     //public CSVExporter csvExporter;
 
@@ -83,34 +92,48 @@ public class WebSocketParser : MonoBehaviour {
             var line = "";
             float lastSignalStrength = 0f;
             string responseString = responseData.Dequeue().ToString();
-            Debug.Log(responseString);
+            Debug.Log("ResponseString: " + responseString);
             WebSocketData.ResponseResult response = JsonUtility.FromJson<WebSocketData.ResponseResult>(responseString);
             //Debug.Log(response.result);
             WebSocketData.Response responseRaw = JsonUtility.FromJson<WebSocketData.Response>(responseString);
 
             if(!String.IsNullOrEmpty(responseRaw.result.cortexToken)) {
               cortexToken = responseRaw.result.cortexToken;
-              Debug.Log("cortexToken is: " + cortexToken);
+              Debug.Log("CortexToken: " + cortexToken);
               CreateSession(cortexToken);
             }
 
             if(!String.IsNullOrEmpty(responseRaw.result.id)) {
               // string sessionId = responseRaw.result.id;
-              Debug.Log("session id is: " + responseRaw.result.id);
-              Subscribe("met", cortexToken, responseRaw.result.id);
-            //  Subscribe("met", cortexToken, responseRaw.result.id);
+              Debug.Log("Session Id: " + responseRaw.result.id);
+                Subscribe("met", cortexToken, responseRaw.result.id);
             }
 
             //if(response.mot.Count>0){
             //sphere.transform.position = new Vector3(float.Parse(response.mot[7]), float.Parse(response.mot[8]), float.Parse(response.mot[9]));
             //}
-            Debug.Log (response.met[18]);
+            Debug.Log ("Response.Met: " + response.met[18]);
 
 
             float newFocus = float.Parse(response.met[18]);
+           
 
+            Debug.Log("NewFocus: " + newFocus);
 
-            if(newFocus > 0.4){
+            if (response.met[18] == null)
+            {
+                Debug.Log("no data");
+            }
+
+            if (newFocus > 300000){
+
+                Debug.Log("Up");
+
+                //play sound
+                audio = GetComponent<AudioSource>();
+                audio.PlayOneShot(SoundToPlay, Volume);
+
+                //animate 
                 Vector3 startPos = sphereFocus.transform.position;
 
                 Vector3 endPos = Vector3.MoveTowards(sphereFocus.transform.position, Target.position, distPerStep);
@@ -119,7 +142,7 @@ public class WebSocketParser : MonoBehaviour {
 
                 System.Action<ITween<Vector3>> sphereMovement = (t) =>
                 {
-                    sphereFocus.transform.position = t.CurrentValue;
+                sphereFocus.transform.position = t.CurrentValue;
                 };
 
 
@@ -127,15 +150,34 @@ public class WebSocketParser : MonoBehaviour {
                 sphereFocus.gameObject.Tween("SphereMovement", startPos, endPos, timePerStep, TweenScaleFunctions.CubicEaseInOut, sphereMovement);
                 lastFocusValue = newFocus;
             }
-            else
+            else if (newFocus == null)
             {
-                Debug.Log("focus down" + newFocus);
+                Debug.Log("no data" + newFocus);
+                
             }
+
+            else 
+            {
+                Debug.Log("down" + newFocus);
+                Vector3 startPos = sphereFocus.transform.position;
+                Vector3 endPos = Vector3.MoveTowards(sphereFocus.transform.position, StartPoint.position, distPerStep);
+
+                System.Action<ITween<Vector3>> sphereMovement = (t) =>
+                {
+                    sphereFocus.transform.position = t.CurrentValue;
+                };
+
+                sphereFocus.gameObject.Tween("SphereMovement", startPos, endPos, timePerStepBack, TweenScaleFunctions.CubicEaseInOut, sphereMovement);
+                lastFocusValue = newFocus;
+
+            }
+
+
             // csvExporter.WriteEEGData(response);
         }
-  }
+    }
 
-    void Authorize(){
+void Authorize(){
         WebSocketData.AuthParameter p = new WebSocketData.AuthParameter();
         p.clientId = "ZFDADBiG5lri14hJjNMQSaXdooyu3x8pPDGgEbCe";
         p.clientSecret = "EiZeIaY2fAbyIeEtsbI2yjwlDuiG0WaEPpNShBC3ctnuGDMEdzULTewbIfvTY7fHguSGHjvdFcL5YZ8rFZemT8vXuSTk7IlYia2LsERvt5HS3jwNOvXpa7mzvyQXBcfO";
